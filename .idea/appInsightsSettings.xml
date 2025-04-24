@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.tmclone" />
+                  <option name="mobileSdkAppId" value="1:771661630802:android:78771cbe0e84a579f73e8b" />
+                  <option name="projectId" value="ticketmasterclone-ad117" />
+                  <option name="projectNumber" value="771661630802" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

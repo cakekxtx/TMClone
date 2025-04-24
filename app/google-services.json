@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "771661630802",
+    "project_id": "ticketmasterclone-ad117",
+    "storage_bucket": "ticketmasterclone-ad117.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771661630802:android:78771cbe0e84a579f73e8b",
+        "android_client_info": {
+          "package_name": "com.example.tmclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771661630802-73uqvb4krc6ia6saqgj95ss3peho4p5c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tmclone",
+            "certificate_hash": "678372dbc076b7cf566385f362dc7774e523b57b"
+          }
+        },
+        {
+          "client_id": "771661630802-e0a4amd07vfu7sttk3p3o7m0f151mdbb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTeIPS_SQir3vMAt377diuPZs0o0xha78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771661630802-e0a4amd07vfu7sttk3p3o7m0f151mdbb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
