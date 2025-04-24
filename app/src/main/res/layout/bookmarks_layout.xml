@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/bookmarkEvent_Image"
                 android:layout_width="145dp"
                 android:layout_height="145dp"
                 android:layout_marginStart="8dp"
@@ -31,18 +31,43 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/bookmarkEventName_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="28dp"
-                android:text="Event name"
-                android:textSize="16sp"
+                android:text="@string/placeholder_event_name"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/bookmarkEvent_Image"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/bookmarkTicketLink_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="49dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/text_tickets"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/bookmarkEventName_textview" />
+
+            <ImageButton
+                android:id="@+id/removeBookmark_button"
+                android:layout_width="52dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookmarkTicketLink_button"
+                app:srcCompat="@drawable/filled_bookmark"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

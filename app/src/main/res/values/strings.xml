@@ -4,4 +4,6 @@
     <string name="title_bookmarks">Bookmarks</string>
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
+    <string name="text_tickets">Tickets</string>
+    <string name="placeholder_event_name">Event name</string>
 </resources>
