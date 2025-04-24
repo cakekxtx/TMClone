@@ -1,4 +1,4 @@
-package com.example.tmclone.ui.notifications
+package com.example.tmclone.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

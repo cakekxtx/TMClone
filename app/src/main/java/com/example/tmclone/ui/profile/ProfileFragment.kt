@@ -1,4 +1,4 @@
-package com.example.tmclone.ui.notifications
+package com.example.tmclone.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
