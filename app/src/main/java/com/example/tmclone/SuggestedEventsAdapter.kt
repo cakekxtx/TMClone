@@ -31,7 +31,10 @@ class SuggestEventsAdapter (private val events: ArrayList<Event>):
 					Toast.makeText(context, "No ticket link found", Toast.LENGTH_SHORT).show()
 				}
 			}
+
+
 		}
+
 
 
 	}

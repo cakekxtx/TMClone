@@ -2,6 +2,7 @@ package com.example.tmclone
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -20,12 +21,14 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 		val eventImage = itemView.findViewById<ImageButton>(R.id.bookmarkEvent_Image)
 		val eventNameTextView = itemView.findViewById<TextView>(R.id.bookmarkEventName_textview)
 		val eventTicketButton = itemView.findViewById<Button>(R.id.bookmarkTicketLink_button)
+		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.bookmarkEvent_Image)
 
 		var ticketurl = " "
 
 		init{
+			val context = itemView.context
+
 			eventTicketButton.setOnClickListener{
-				val context = itemView.context
 				val browserIntent = Intent(Intent.ACTION_VIEW)
 				if(ticketurl.isNotEmpty()){
 					browserIntent.data = Uri.parse(ticketurl)
@@ -34,6 +37,12 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 				else{
 					Toast.makeText(context, "No ticket link found", Toast.LENGTH_SHORT).show()
 				}
+			}
+
+			bookmarkButton.setOnClickListener {
+				val position = adapterPosition
+				events.removeAt(position)
+				notifyItemRemoved(position)
 			}
 		}
 	}
