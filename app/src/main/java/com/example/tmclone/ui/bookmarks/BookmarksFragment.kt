@@ -7,36 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.tmclone.R
 import com.example.tmclone.databinding.FragmentBookmarksBinding
 
 class BookmarksFragment : Fragment() {
 
-	private var _binding: FragmentBookmarksBinding? = null
 
-	// This property is only valid between onCreateView and
-	// onDestroyView.
-	private val binding get() = _binding!!
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
 	): View {
-		val dashboardViewModel =
-			ViewModelProvider(this).get(BookmarksViewModel::class.java)
-
-		_binding = FragmentBookmarksBinding.inflate(inflater, container, false)
-		val root: View = binding.root
-
-		val textView: TextView = binding.textDashboard
-		dashboardViewModel.text.observe(viewLifecycleOwner) {
-			textView.text = it
-		}
-		return root
+		val view = inflater.inflate(R.layout.fragment_bookmarks, container, false)
+		return view
 	}
 
-	override fun onDestroyView() {
-		super.onDestroyView()
-		_binding = null
-	}
+
 }

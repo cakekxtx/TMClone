@@ -6,4 +6,6 @@
     <string name="title_search">Search</string>
     <string name="text_tickets">Tickets</string>
     <string name="placeholder_event_name">Event name</string>
+    <string name="title_ticketMaster">TicketMaster</string>
+    <string name="text_signin">Sign in</string>
 </resources>

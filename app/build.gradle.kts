@@ -45,6 +45,8 @@ dependencies {
 	//Firebase products
 	implementation("com.google.firebase:firebase-analytics")
 	implementation("com.google.firebase:firebase-firestore-ktx") //Firestore
+	implementation("com.google.firebase:firebase-auth-ktx") //Firebase Authentication
+	implementation("com.firebaseui:firebase-ui-auth:8.0.2") //Firebase Auth UI
 	// GSON
 	implementation("com.google.code.gson:gson:2.12.1")
 	implementation("com.squareup.retrofit2:converter-gson:2.11.0")
@@ -63,6 +65,7 @@ dependencies {
 	implementation(libs.androidx.navigation.ui.ktx)
 	implementation(libs.androidx.legacy.support.v4)
 	implementation(libs.androidx.fragment.ktx)
+	implementation(libs.androidx.activity)
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)

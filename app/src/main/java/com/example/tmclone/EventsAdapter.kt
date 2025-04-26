@@ -28,7 +28,9 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val eventImage = itemView.findViewById<ImageView>(R.id.eventImage_imageView)
 		val priceRange = itemView.findViewById<TextView>(R.id.priceRange_textView)
 		val getTicketsButton = itemView.findViewById<Button>(R.id.getTickets_button)
+		val bookmarkButton = itemView.findViewById<Button>(R.id.searchBookmarks_button)
 		var ticketurl = ""
+
 
 		init{
 			getTicketsButton.setOnClickListener{
@@ -42,6 +44,10 @@ class EventsAdapter (private val events: ArrayList<Event>):
 					Toast.makeText(context, "No ticket link found", Toast.LENGTH_SHORT).show()
 				}
 
+			}
+
+			bookmarkButton.setOnClickListener {
+				//add to database
 			}
 		}
 	}
