@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,7 +29,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val eventImage = itemView.findViewById<ImageView>(R.id.eventImage_imageView)
 		val priceRange = itemView.findViewById<TextView>(R.id.priceRange_textView)
 		val getTicketsButton = itemView.findViewById<Button>(R.id.getTickets_button)
-		val bookmarkButton = itemView.findViewById<Button>(R.id.searchBookmarks_button)
+		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.searchBookmarks_button)
 		var ticketurl = ""
 
 
