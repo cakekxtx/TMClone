@@ -126,13 +126,13 @@
         android:id="@+id/deleteAcc_button"
         android:layout_width="173dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="72dp"
         android:background="#00FFFFFF"
         android:text="@string/delete_account"
         android:textColor="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 

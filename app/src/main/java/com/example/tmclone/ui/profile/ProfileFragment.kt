@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -36,7 +37,7 @@ class ProfileFragment : Fragment() {
 	lateinit var profileName: TextView
 	lateinit var profileEmail: TextView
 	lateinit var changePasswordButton: Button
-	lateinit var logoutButton: Button
+	lateinit var logoutButton: ImageButton
 	lateinit var deleteAccountButton: Button
 
 	@SuppressLint("MissingInflatedId")
