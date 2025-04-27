@@ -111,52 +111,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_textview" />
 
-    <TextView
-        android:id="@+id/password_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/textview"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <ImageButton
-        android:id="@+id/showPassword_button"
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="28dp"
-        android:src="@drawable/baseline_remove_red_eye_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/password_textview"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
     <ImageButton
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/baseline_logout_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/deleteAcc_button"
         android:layout_width="173dp"
         android:layout_height="37dp"
-        android:layout_marginTop="118dp"
         android:layout_marginBottom="28dp"
         android:background="#00FFFFFF"
-        android:text="delete account"
+        android:text="@string/delete_account"
         android:textColor="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_textview"
-        app:layout_constraintVertical_bias="0.909" />
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/changePassword_button"
+        android:layout_width="218dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:background="#00FFFFFF"
+        android:text="@string/change_password"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

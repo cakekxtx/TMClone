@@ -10,4 +10,6 @@
     <string name="text_signin">Sign in</string>
     <string name="placeholder_name">User Name</string>
     <string name="textview">TextView</string>
+    <string name="delete_account">delete account</string>
+    <string name="change_password">change password</string>
 </resources>
