@@ -7,19 +7,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
+import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.BlockThreshold
+import com.google.ai.client.generativeai.type.HarmCategory
+import com.google.ai.client.generativeai.type.SafetySetting
+import com.google.api.Context
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "EventsAdapter"
 class EventsAdapter (private val events: ArrayList<Event>):
 	RecyclerView.Adapter<EventsAdapter.MyViewHolder>(){
+
+	val GEMINI_API_KEY = "AIzaSyAI5j6qJ9zRampB5G9lMG9TXay3LlWjSls"
+
 
 	inner class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 		val eventName = itemView.findViewById<TextView>(R.id.eventName_textView)
@@ -30,6 +44,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val priceRange = itemView.findViewById<TextView>(R.id.priceRange_textView)
 		val getTicketsButton = itemView.findViewById<Button>(R.id.getTickets_button)
 		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.searchBookmarks_button)
+		val askGeminiButton = itemView.findViewById<ImageButton>(R.id.askGemini_button)
 		var ticketurl = ""
 
 
@@ -49,6 +64,10 @@ class EventsAdapter (private val events: ArrayList<Event>):
 
 			bookmarkButton.setOnClickListener {
 				//add to database
+			}
+
+			askGeminiButton.setOnClickListener {
+
 			}
 		}
 	}
@@ -150,4 +169,40 @@ class EventsAdapter (private val events: ArrayList<Event>):
 
 		return formattedTime
 	}
+
+	fun askGemini(prompt: String){
+		val harassmentSafety = SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.ONLY_HIGH)
+		val hateSpeechSafety = SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE)
+
+		val model = GenerativeModel(
+			modelName = "gemini-2.0-flash",
+			apiKey = GEMINI_API_KEY,
+			safetySettings = listOf(harassmentSafety, hateSpeechSafety)
+		)
+
+		val geminiResponse = ""
+
+		CoroutineScope(Dispatchers.Main).launch{
+			try{
+				val response = model.generateContent(prompt)
+				val content = response.candidates.firstOrNull()?.content
+
+				content?.let{ content ->
+					if(content.parts.isNotEmpty()){
+						val firstPart = content.parts[0]
+
+					}
+				}
+
+			} catch (e: Exception){
+				Log.e(TAG, "Error generating Gemini response", e)
+				/*runOnUiThread{
+
+				}*/
+			}
+		}
+	}
+
+
+
 }

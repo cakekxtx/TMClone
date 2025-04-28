@@ -39,9 +39,11 @@
 
             <TextView
                 android:id="@+id/eventName_textView"
-                android:layout_width="335dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="TextView"
                 android:textAlignment="gravity"
                 android:textColor="@color/blue"
@@ -53,10 +55,11 @@
 
             <TextView
                 android:id="@+id/eventAddress_textView"
-                android:layout_width="335dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="24dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:text="TextView"
                 android:textSize="12sp"
                 android:textStyle="italic"
@@ -67,8 +70,11 @@
 
             <TextView
                 android:id="@+id/eventDateTime_textView"
-                android:layout_width="335dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:text="TextView"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,9 +84,11 @@
 
             <TextView
                 android:id="@+id/eventLocation_textView"
-                android:layout_width="335dp"
-                android:layout_height="16dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:text="TextView"
                 android:textSize="13dp"
                 android:textStyle="bold"
@@ -94,6 +102,7 @@
                 android:id="@+id/getTickets_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="Get Tickets"
@@ -106,9 +115,11 @@
                 android:id="@+id/priceRange_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:text=" "
+                app:layout_constraintEnd_toStartOf="@+id/askGemini_button"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDateTime_textView" />
 
@@ -116,13 +127,28 @@
                 android:id="@+id/searchBookmarks_button"
                 android:layout_width="44dp"
                 android:layout_height="48dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/getTickets_button"
-                app:layout_constraintHorizontal_bias="0.914"
+                app:layout_constraintHorizontal_bias="0.962"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventDateTime_textView"
                 app:srcCompat="@drawable/outlined_bookmark" />
+
+            <ImageButton
+                android:id="@+id/askGemini_button"
+                android:layout_width="46dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/searchBookmarks_button"
+                app:layout_constraintTop_toBottomOf="@+id/eventDateTime_textView"
+                app:srcCompat="@drawable/baseline_help_outline_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
