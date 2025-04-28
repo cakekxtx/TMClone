@@ -1,5 +1,6 @@
 package com.example.tmclone
 
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -48,6 +49,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val askGeminiButton = itemView.findViewById<ImageButton>(R.id.askGemini_button)
 		var ticketurl = ""
 
+		//val position = adapterPosition
 
 		init {
 			getTicketsButton.setOnClickListener {
@@ -67,8 +69,18 @@ class EventsAdapter (private val events: ArrayList<Event>):
 			}
 
 			askGeminiButton.setOnClickListener {
+				val prompt = "Info About ${events[adapterPosition].name}"
+				val geminiResponse = askGemini(prompt)
 				//show dialog to show gemini's reponse
-				val builder = AlertDialog.Builder
+				val builder = AlertDialog.Builder(itemView.context)
+					.setTitle(prompt)
+					.setMessage(geminiResponse)
+
+				builder.setNeutralButton("OK") {dialog, which ->
+					//dismiss the dialog
+				}
+
+				builder.create().show()
 			}
 		}
 	}
@@ -171,7 +183,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		return formattedTime
 	}
 
-	fun askGemini(prompt: String): String {
+	fun askGemini(prompt: String):String{
 		val harassmentSafety = SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.ONLY_HIGH)
 		val hateSpeechSafety =
 			SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE)
@@ -182,13 +194,12 @@ class EventsAdapter (private val events: ArrayList<Event>):
 			safetySettings = listOf(harassmentSafety, hateSpeechSafety)
 		)
 
-		val geminiResponse = ""
+		var geminiAnswer = "" //store gemini's answer
 
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
 				val response = model.generateContent(prompt)
 				val content = response.candidates.firstOrNull()?.content
-				var geminiAnswer = "" //store gemini's answer
 
 				content?.let { content ->
 					if (content.parts.isNotEmpty()) {
@@ -201,8 +212,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 
 							else -> {
 								Log.w(
-									"GeminiAPI",
-									"Received a non-text part:${firstPart::class.java.simpleName} "
+									"GeminiAPI", "Received a non-text part:${firstPart::class.java.simpleName} "
 								)
 								geminiAnswer = "Unable to display Gemini's response"
 							}
@@ -214,6 +224,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 				} ?: run {
 					Log.w("GeminiAPI", "No content in the response. ",)
 					geminiAnswer = "No response received."
+
 				}
 
 			} catch (e: Exception) {
@@ -223,8 +234,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 				}*/
 			}
 		}
-
-		return geminiResponse
+		return geminiAnswer
 	}
 
 
