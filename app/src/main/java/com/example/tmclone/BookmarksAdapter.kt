@@ -12,6 +12,15 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
+
+
+/**
+ * Retrieve bookmarks from db
+ * Remove existing bookmarks
+ */
+
+
 
 class BookmarksAdapter (private val events: ArrayList<Event>):
 	RecyclerView.Adapter<BookmarksAdapter.MyViewHolder>(){
@@ -43,6 +52,7 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 				val position = adapterPosition
 				events.removeAt(position)
 				notifyItemRemoved(position)
+				Toast.makeText(context, "${events[position].name} event removed from bookmarks.", Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
@@ -70,6 +80,18 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 
 	override fun getItemCount(): Int {
 		return events.size
+	}
+
+	fun retrieveDataFromDB(firebaseDB: FirebaseFirestore, uid: String){
+		val bookmarks = firebaseDB.collection("bookmarks")
+		bookmarks.get()
+			.addOnSuccessListener { documents ->
+				for(document in documents){
+					if(document.id.toString().equals(uid)){ //check if current document is the user's doc
+
+					}
+				}
+			}
 	}
 
 }

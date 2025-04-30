@@ -4,6 +4,7 @@ import android.app.ProgressDialog.show
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ import com.google.ai.client.generativeai.type.HarmCategory
 import com.google.ai.client.generativeai.type.SafetySetting
 import com.google.ai.client.generativeai.type.TextPart
 import com.google.api.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +51,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.searchBookmarks_button)
 		val askGeminiButton = itemView.findViewById<ImageButton>(R.id.askGemini_button)
 		var ticketurl = ""
-
+		val firebaseDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 		//val position = adapterPosition
 
 		init {
@@ -65,7 +68,24 @@ class EventsAdapter (private val events: ArrayList<Event>):
 			}
 
 			bookmarkButton.setOnClickListener {
-				//add to database
+				//get current user
+				val currUser = FirebaseAuth.getInstance().currentUser
+				if(currUser == null){
+					val intent = Intent(itemView.context, LoginActivity::class.java)
+					itemView.context.startActivity(intent)
+				}
+				else{
+					val uid = currUser.uid
+
+					//retrieve data from db --- want to move into a function
+					/**
+					 * issue: replaces the current object in array in db instead of adding
+					 */
+					var bookmarkedEvents = ArrayList<Event>()
+					bookmarkedEvents = retrieveDataFromDB(firebaseDB, uid)
+					bookmarkedEvents.add(events[adapterPosition])
+					addBookmarksDataToDB(firebaseDB, uid, bookmarkedEvents)
+				}
 			}
 
 			askGeminiButton.setOnClickListener {
@@ -76,7 +96,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 					.setTitle(prompt)
 					.setMessage(geminiResponse)
 
-				builder.setNeutralButton("OK") {dialog, which ->
+				builder.setPositiveButton("OK") {dialog, which ->
 					//dismiss the dialog
 				}
 
@@ -196,6 +216,10 @@ class EventsAdapter (private val events: ArrayList<Event>):
 
 		var geminiAnswer = "" //store gemini's answer
 
+		/**
+		 * issue: unable to show gemini's response in dialog
+		 * how to return string inside coroutine
+		 */
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
 				val response = model.generateContent(prompt)
@@ -238,4 +262,49 @@ class EventsAdapter (private val events: ArrayList<Event>):
 	}
 
 
+	fun addBookmarksDataToDB(firebaseDB: FirebaseFirestore, uid: String, bookmarkedEvents: ArrayList<Event>){
+		val bookmarks = firebaseDB.collection("bookmarks")
+		val toAdd = mapOf(
+			"bookmarks" to bookmarkedEvents
+		)
+
+		bookmarks.document(uid)
+			.get()
+			.addOnSuccessListener { document ->
+				if(document != null){
+					document.reference.update(toAdd)
+					Log.d(TAG, "Data successfully added to database")
+				}
+			}
+			.addOnFailureListener { e ->
+				Log.e(TAG, "Failed to get data from database", e )
+			}
+	}
+
+
+	/**
+	 * issue: replaces the current object in array in db instead of adding
+	 */
+	fun retrieveDataFromDB(firebaseDB: FirebaseFirestore, uid: String): ArrayList<Event>{
+		var bookmarkedEvents = ArrayList<Event>()
+		val bookmarks = firebaseDB.collection("bookmarks")
+		bookmarks.get()
+			.addOnSuccessListener { documents ->
+				for (document in documents){
+					if(document.id == uid) {
+						bookmarkedEvents = document.get("bookmarks") as ArrayList<Event>
+
+						//should return from here
+					}
+
+				}
+
+				Log.d(TAG, "Data retrieved successfully.")
+			}
+			.addOnFailureListener { e ->
+				e(TAG, "Error retrieving data",e )
+			}
+
+		return bookmarkedEvents
+	}
 }

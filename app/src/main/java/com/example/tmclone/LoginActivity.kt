@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.e
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -13,14 +14,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 private const val TAG = "LoginActivity"
 class LoginActivity : AppCompatActivity() {
+	private lateinit var firebaseDB: FirebaseFirestore
+
 	@SuppressLint("MissingInflatedId")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		enableEdgeToEdge()
 		setContentView(R.layout.activity_login)
+
+		//instance of database
+		firebaseDB = FirebaseFirestore.getInstance()
 
 		//instance of current user
 		val currUser = FirebaseAuth.getInstance().currentUser
@@ -46,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
 					if(user?.metadata?.creationTimestamp == user?.metadata?.lastSignInTimestamp){
 						//might have a preferences screen
 						toastMsg = "Welcome!"
+						addUserToDB(user?.uid.toString(), user?.displayName.toString())
 					}
 					//if old user
 					else{
@@ -87,13 +95,25 @@ class LoginActivity : AppCompatActivity() {
 					.setLogo(R.drawable.ic_launcher_foreground)
 					.setAlwaysShowSignInMethodScreen(true)
 					.setIsSmartLockEnabled(false)
-					.setTheme(com.firebase.ui.auth.R.style.FirebaseUI)
 					.build()
 
 				signActivityLauncher.launch(signInIntent)
 			}
 		}
 
+	}
 
+	fun addUserToDB(uid: String, username: String){
+		val bookmarks = firebaseDB.collection("bookmarks")
+		val fields = hashMapOf(
+			"name" to username
+		)
+		bookmarks.document(uid).set(fields)
+			.addOnSuccessListener {
+				Log.d(TAG, "document successfully written")
+			}
+			.addOnFailureListener {e->
+				Log.e(TAG, "error writing document", e)
+			}
 	}
 }

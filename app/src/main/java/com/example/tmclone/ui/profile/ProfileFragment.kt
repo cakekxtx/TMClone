@@ -72,6 +72,9 @@ class ProfileFragment : Fragment() {
 				.into(profileImage)
 		}
 
+		logoutButton.setOnClickListener {
+			logout()
+		}
 		return view
 
 	}
@@ -83,7 +86,7 @@ class ProfileFragment : Fragment() {
 	}
 
 	// on logout click
-	fun logout(view: View) {
+	fun logout() {
 		AuthUI.getInstance().signOut(requireContext())
 			.addOnCompleteListener { task ->
 				if (task.isSuccessful) {
