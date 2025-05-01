@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -27,10 +28,10 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 
 
 	inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-		val eventImage = itemView.findViewById<ImageButton>(R.id.bookmarkEvent_Image)
+		val eventImage = itemView.findViewById<ImageView>(R.id.bookmarkEvent_Image)
 		val eventNameTextView = itemView.findViewById<TextView>(R.id.bookmarkEventName_textview)
 		val eventTicketButton = itemView.findViewById<Button>(R.id.bookmarkTicketLink_button)
-		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.bookmarkEvent_Image)
+		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.removeBookmark_button)
 
 		var ticketurl = " "
 

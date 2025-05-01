@@ -2,12 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/black"
+    android:padding="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="411dp"
-        android:layout_height="185dp"
+        android:layout_width="390dp"
+        android:layout_height="332dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -17,12 +22,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/blue">
 
             <ImageView
                 android:id="@+id/bookmarkEvent_Image"
-                android:layout_width="145dp"
-                android:layout_height="145dp"
+                android:layout_width="375dp"
+                android:layout_height="184dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
@@ -34,37 +40,42 @@
                 android:id="@+id/bookmarkEventName_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
                 android:text="@string/placeholder_event_name"
+                android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/bookmarkEvent_Image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookmarkEvent_Image" />
 
             <Button
                 android:id="@+id/bookmarkTicketLink_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="49dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/text_tickets"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/bookmarkEventName_textview" />
+                app:layout_constraintTop_toBottomOf="@+id/bookmarkEventName_textview"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageButton
                 android:id="@+id/removeBookmark_button"
                 android:layout_width="52dp"
                 android:layout_height="47dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bookmarkTicketLink_button"
+                app:layout_constraintTop_toBottomOf="@+id/bookmarkEventName_textview"
+                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/filled_bookmark"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
