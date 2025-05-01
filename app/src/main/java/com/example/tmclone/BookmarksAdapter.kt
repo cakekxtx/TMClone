@@ -2,6 +2,8 @@ package com.example.tmclone
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import android.util.Log.e
 import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -22,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 
 
-
+private const val TAG = "BookmarksAdapter"
 class BookmarksAdapter (private val events: ArrayList<Event>):
 	RecyclerView.Adapter<BookmarksAdapter.MyViewHolder>(){
 
@@ -32,7 +35,8 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 		val eventNameTextView = itemView.findViewById<TextView>(R.id.bookmarkEventName_textview)
 		val eventTicketButton = itemView.findViewById<Button>(R.id.bookmarkTicketLink_button)
 		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.removeBookmark_button)
-
+		val firebaseDB  = FirebaseFirestore.getInstance()
+		val currUser = FirebaseAuth.getInstance().currentUser
 		var ticketurl = " "
 
 		init{
@@ -51,9 +55,13 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 
 			bookmarkButton.setOnClickListener {
 				val position = adapterPosition
+
+				//update database
+				retrieveAndRemoveDataFromDB(firebaseDB, currUser?.uid.toString(), events[position].id)
+				Toast.makeText(context, "${events[position].name} event removed from bookmarks.", Toast.LENGTH_SHORT).show()
 				events.removeAt(position)
 				notifyItemRemoved(position)
-				Toast.makeText(context, "${events[position].name} event removed from bookmarks.", Toast.LENGTH_SHORT).show()
+
 			}
 		}
 	}
@@ -83,15 +91,28 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 		return events.size
 	}
 
-	fun retrieveDataFromDB(firebaseDB: FirebaseFirestore, uid: String){
-		val bookmarks = firebaseDB.collection("bookmarks")
-		bookmarks.get()
-			.addOnSuccessListener { documents ->
-				for(document in documents){
-					if(document.id.toString().equals(uid)){ //check if current document is the user's doc
 
+	fun retrieveAndRemoveDataFromDB(firebaseDB: FirebaseFirestore, uid: String, eventId: String){
+		val bookmarks = firebaseDB.collection("bookmarks")
+
+		bookmarks.document(uid)
+			.get()
+			.addOnSuccessListener { document ->
+				var eventIdArray = ArrayList<String>()
+				if (document.get("userbookmarks") != null){
+					Log.d(TAG, "in userbookmarks: ${document.get("userbookmarks")}")
+					eventIdArray =  document.get("userbookmarks") as ArrayList<String>
+					if(eventIdArray.contains(eventId)){
+						eventIdArray.remove(eventId)
+						val toUpdate = mapOf(
+							"userbookmarks" to eventIdArray
+						)
+						document.reference.update(toUpdate)
 					}
 				}
+			}
+			.addOnFailureListener { e ->
+
 			}
 	}
 

@@ -56,12 +56,18 @@ class BookmarksFragment : Fragment() {
 				val eventIdArray = document.get("userbookmarks") as ArrayList<String>
 				Log.d(TAG, "Data from Firebase retrieved successfully.")
 				retrieveDataFromWeb(eventIdArray)
-
+			}
+			.addOnFailureListener { e ->
+				Log.e(TAG, "Error retrieving data from database", e)
 			}
 
 
+
+		Log.d(TAG, "bookmarkList: ${bookmarkedList.size}")
 		return view
 	}
+
+
 
 	fun retrieveDataFromWeb(eventIdArray: ArrayList<String>){
 		//retrofit
@@ -71,6 +77,8 @@ class BookmarksFragment : Fragment() {
 			.build()
 
 		val eventAPI = retrofit.create(EventTicketService::class.java)
+
+		val numOfEvents = eventIdArray.size
 
 		for(eventId in eventIdArray) {
 			eventAPI.getEventThroughID(API_KEY, eventId).enqueue(
@@ -89,7 +97,11 @@ class BookmarksFragment : Fragment() {
 						val event = body?.eventsArray?.events[0]
 						if (event != null){
 							bookmarkedList.add(event)
-							Log.d(TAG, "bookmarkedList: $bookmarkedList")
+							//Log.d(TAG, "bookmarkedList: $bookmarkedList")
+
+						}
+
+						if(numOfEvents ==  bookmarkedList.size){
 							adapter.notifyDataSetChanged()
 						}
 					}

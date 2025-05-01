@@ -78,9 +78,10 @@ class EventsAdapter (private val events: ArrayList<Event>):
 				}
 				else{
 					val uid = currUser.uid
-
 					val position = adapterPosition
 					retrieveAndAddDataToDB(firebaseDB, uid, position)
+					Toast.makeText(itemView.context, "Bookmark added successfully!", Toast.LENGTH_SHORT).show()
+					bookmarkButton.setImageResource(R.drawable.filled_bookmark)
 				}
 			}
 
