@@ -19,4 +19,10 @@ interface EventTicketService {
 		@Query("keyword") category: String,
 		@Query("countryCode") country: String
 	): Call<EventData>
+
+	@GET("events")
+	fun getEventThroughID(
+		@Query("apikey") apiKey: String,
+		@Query("id") eventId: String
+	): Call<EventData>
 }

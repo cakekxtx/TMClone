@@ -13,6 +13,7 @@ data class EventArray(
 
 data class Event(
 	val name: String,
+	val id: String,
 	val images: List<ImageInfo>,
 	val dates: DateAndTime,
 	@SerializedName("url") val ticketLink: String? = "",

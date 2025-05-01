@@ -1,5 +1,6 @@
 package com.example.tmclone
 
+import android.R.attr.prompt
 import android.app.ProgressDialog.show
 import android.content.Intent
 import android.net.Uri
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.jvm.java
 
 
 private const val TAG = "EventsAdapter"
@@ -77,30 +79,15 @@ class EventsAdapter (private val events: ArrayList<Event>):
 				else{
 					val uid = currUser.uid
 
-					//retrieve data from db --- want to move into a function
-					/**
-					 * issue: replaces the current object in array in db instead of adding
-					 */
-					var bookmarkedEvents = ArrayList<Event>()
-					bookmarkedEvents = retrieveDataFromDB(firebaseDB, uid)
-					bookmarkedEvents.add(events[adapterPosition])
-					addBookmarksDataToDB(firebaseDB, uid, bookmarkedEvents)
+					val position = adapterPosition
+					retrieveAndAddDataToDB(firebaseDB, uid, position)
 				}
 			}
 
 			askGeminiButton.setOnClickListener {
-				val prompt = "Info About ${events[adapterPosition].name}"
-				val geminiResponse = askGemini(prompt)
-				//show dialog to show gemini's reponse
-				val builder = AlertDialog.Builder(itemView.context)
-					.setTitle(prompt)
-					.setMessage(geminiResponse)
+				val prompt = "Give info about ${events[adapterPosition].name} event or artist, skip introduction, paragraph format, under 150 words, skip venue details and time"
 
-				builder.setPositiveButton("OK") {dialog, which ->
-					//dismiss the dialog
-				}
-
-				builder.create().show()
+				askGemini(events[adapterPosition].name, prompt, itemView.context)
 			}
 		}
 	}
@@ -203,10 +190,12 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		return formattedTime
 	}
 
-	fun askGemini(prompt: String):String{
+	fun askGemini(eventName: String, prompt: String, context: android.content.Context):String{
+
 		val harassmentSafety = SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.ONLY_HIGH)
 		val hateSpeechSafety =
 			SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE)
+
 
 		val model = GenerativeModel(
 			modelName = "gemini-2.0-flash",
@@ -232,6 +221,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 							is TextPart -> {
 								Log.d("GeminiAPI", "Generated response: ${firstPart.text}")
 								geminiAnswer = firstPart.text
+								showDialog(eventName, geminiAnswer, context)
 							}
 
 							else -> {
@@ -239,15 +229,18 @@ class EventsAdapter (private val events: ArrayList<Event>):
 									"GeminiAPI", "Received a non-text part:${firstPart::class.java.simpleName} "
 								)
 								geminiAnswer = "Unable to display Gemini's response"
+								showDialog(prompt, geminiAnswer, context)
 							}
 						}
 					} else {
 						Log.w("GeminiAPI", "No parts in the content.")
 						geminiAnswer = "No response received."
+						showDialog(prompt, geminiAnswer, context)
 					}
 				} ?: run {
 					Log.w("GeminiAPI", "No content in the response. ",)
 					geminiAnswer = "No response received."
+					showDialog(prompt, geminiAnswer, context)
 
 				}
 
@@ -262,17 +255,18 @@ class EventsAdapter (private val events: ArrayList<Event>):
 	}
 
 
-	fun addBookmarksDataToDB(firebaseDB: FirebaseFirestore, uid: String, bookmarkedEvents: ArrayList<Event>){
+	fun addBookmarksDataToDB(firebaseDB: FirebaseFirestore, uid: String, eventsArr: ArrayList<String>, position: Int ){
 		val bookmarks = firebaseDB.collection("bookmarks")
-		val toAdd = mapOf(
-			"bookmarks" to bookmarkedEvents
+		eventsArr.add(events[position].id)
+		val toUpdate = mapOf(
+			"userbookmarks" to eventsArr
 		)
 
 		bookmarks.document(uid)
 			.get()
 			.addOnSuccessListener { document ->
 				if(document != null){
-					document.reference.update(toAdd)
+					document.reference.update(toUpdate)
 					Log.d(TAG, "Data successfully added to database")
 				}
 			}
@@ -282,29 +276,30 @@ class EventsAdapter (private val events: ArrayList<Event>):
 	}
 
 
-	/**
-	 * issue: replaces the current object in array in db instead of adding
-	 */
-	fun retrieveDataFromDB(firebaseDB: FirebaseFirestore, uid: String): ArrayList<Event>{
-		var bookmarkedEvents = ArrayList<Event>()
-		val bookmarks = firebaseDB.collection("bookmarks")
-		bookmarks.get()
-			.addOnSuccessListener { documents ->
-				for (document in documents){
-					if(document.id == uid) {
-						bookmarkedEvents = document.get("bookmarks") as ArrayList<Event>
 
-						//should return from here
-					}
+	fun retrieveAndAddDataToDB(firebaseDB: FirebaseFirestore, uid: String, position: Int){
+		val userBookmarks = firebaseDB.collection("bookmarks")
 
-				}
-
-				Log.d(TAG, "Data retrieved successfully.")
+		userBookmarks.document(uid)
+			.get()
+			.addOnSuccessListener { document ->
+				val bookmarksArray = document.get("userbookmarks") as ArrayList<String>
+				Log.d(TAG, "Data from database successfully retreived.")
+				addBookmarksDataToDB(firebaseDB, uid, bookmarksArray, position)
 			}
 			.addOnFailureListener { e ->
-				e(TAG, "Error retrieving data",e )
+				e(TAG, "Error retrieving data.", e )
 			}
+	}
 
-		return bookmarkedEvents
+	fun showDialog(title: String, msg: String, context: android.content.Context){
+		val builder = AlertDialog.Builder(context)
+			.setTitle(title)
+			.setMessage(msg)
+			.setPositiveButton("Ok") {dialog, which ->
+				//dismiss
+			}
+			.create()
+			.show()
 	}
 }

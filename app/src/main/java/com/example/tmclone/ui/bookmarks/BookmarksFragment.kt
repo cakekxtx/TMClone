@@ -12,6 +12,8 @@ import com.example.tmclone.databinding.FragmentBookmarksBinding
 
 class BookmarksFragment : Fragment() {
 
+	private val BASE_URL = "https://app.ticketmaster.com/discovery/v2/"
+	private val API_KEY = "EnVQtrsj7Wf4wwAviGLovBBPOWD7aqGF"
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
 	): View {
