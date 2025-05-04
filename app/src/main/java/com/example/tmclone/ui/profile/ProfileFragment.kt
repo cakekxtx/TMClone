@@ -1,10 +1,9 @@
 package com.example.tmclone.ui.profile
 
-import android.R.id.input
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,21 +12,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.tmclone.LoginActivity
 import com.example.tmclone.R
-import com.example.tmclone.databinding.FragmentProfileBinding
 import com.firebase.ui.auth.AuthUI
-import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import org.w3c.dom.Text
+import com.google.firebase.auth.GoogleAuthProvider
+
 
 private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment() {
@@ -39,6 +36,8 @@ class ProfileFragment : Fragment() {
 	lateinit var changePasswordButton: Button
 	lateinit var logoutButton: ImageButton
 	lateinit var deleteAccountButton: Button
+
+	var isChangingPassword: Boolean = false
 
 	@SuppressLint("MissingInflatedId")
 	override fun onCreateView(
@@ -53,7 +52,6 @@ class ProfileFragment : Fragment() {
 		profileEmail = view.findViewById(R.id.email_textview)
 		changePasswordButton = view.findViewById(R.id.changePassword_button)
 		logoutButton = view.findViewById(R.id.logoutButton)
-		deleteAccountButton = view.findViewById(R.id.deleteAcc_button)
 
 
 		//instance of FirebaseAuth
@@ -74,6 +72,10 @@ class ProfileFragment : Fragment() {
 
 		logoutButton.setOnClickListener {
 			logout()
+		}
+
+		changePasswordButton.setOnClickListener {
+			dialogForChangePassword(requireActivity())
 		}
 		return view
 
@@ -99,40 +101,87 @@ class ProfileFragment : Fragment() {
 
 	}
 
-	fun changePassword(view: View) {
-		val currUser = Firebase.auth.currentUser
-		//reauthenticate user
-
-		//show dialog for user input
-	}
-
-	fun deletePassword(view: View){
-		//reauthenticate user
-		//show dialog prompting user if they are sure
-	}
 
 
 	//helper function
 	//to be called before deleting or changing password
-	private fun reauthenticateUser(){
-		val currUser = Firebase.auth.currentUser
-//		val credential = EmailAuthProvider
-//			.getCredential(currUser.email, )
+	private fun reauthenticateUserAndUpdate(currPass: String, newPass: String, context: Context){
+		val currUser = FirebaseAuth.getInstance().currentUser!!
+
+		if(isChangingPassword){
+			val credential = when(currUser.providerId){
+				"google.com" -> GoogleAuthProvider.getCredential(currUser.email.toString(), currPass)
+				else -> EmailAuthProvider.getCredential(currUser.email.toString(), currPass)
+			}
+
+			// prompt user to provide login credentials
+			currUser.reauthenticate(credential)
+				.addOnCompleteListener {
+					Log.d(TAG, "User reauthenticated successfully!")
+					//update password
+					helperToUpdatePassword(newPass, context)
+				}
+				.addOnFailureListener { e->
+					Log.e(TAG, "Failed to reauthenticate user", e)
+
+				}
+
+		}
+
+
 	}
 
 
-	private fun dialogForChangePassword(){
-		val builder = AlertDialog.Builder(requireContext())
+	@SuppressLint("RestrictedApi")
+	private fun dialogForChangePassword(context: Context){
+		//
+
+		val linearlayout = LinearLayout(context)
+
+		val currPasswordEditText = EditText(context)
+		currPasswordEditText.setHint("Current Password")
+		val newPasswordEditText = EditText(context)
+		newPasswordEditText.setHint("New Password")
+
+		linearlayout.setOrientation(LinearLayout.VERTICAL)
+		linearlayout.addView(currPasswordEditText)
+		linearlayout.addView(newPasswordEditText)
+
+		val builder = AlertDialog.Builder(context)
 			.setTitle("Change password")
+			.setMessage("Please enter your current and new password below to continue.")
+			.setView(linearlayout,10,10,10,10)
 
-		val passwordInput: EditText
+		builder.setPositiveButton("Confirm") { dialog, which ->
+			val currPassword = currPasswordEditText.text.toString()
+			val newPassword = newPasswordEditText.text.toString()
+			isChangingPassword = true
+			reauthenticateUserAndUpdate(currPassword, newPassword, context)
 
-		builder.setPositiveButton("Done") { dialog, which ->
 
 		}
 		builder.setNegativeButton("Cancel") {dialog, which ->
-			//dismiss dialog
+			Log.d("ChangePassword", "User cancelled password change.")
+			isChangingPassword = false
 		}
 
+		builder.create().show()
+
 	}
+
+	private fun helperToUpdatePassword(newPass: String, context: Context){
+		val currUser = FirebaseAuth.getInstance().currentUser!!
+
+		currUser.updatePassword(newPass)
+			.addOnCompleteListener { task ->
+				if(task.isSuccessful){
+					Toast.makeText(context, "Password successfully updated", Toast.LENGTH_SHORT).show()
+					isChangingPassword = false
+				}
+			}
+	}
+
+
+
+
 }

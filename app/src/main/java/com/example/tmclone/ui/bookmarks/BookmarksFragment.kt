@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tmclone.BookmarksAdapter
@@ -43,7 +44,8 @@ class BookmarksFragment : Fragment() {
 		bookmarkRecyclerView = view.findViewById(R.id.bookmarks_recyclerView)
 		bookmarkRecyclerView.adapter = adapter
 		bookmarkRecyclerView.layoutManager = LinearLayoutManager(context)
-
+		val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+		bookmarkRecyclerView.addItemDecoration(dividerItemDecoration)
 
 		val firebaseDB = FirebaseFirestore.getInstance()
 		val currUser = FirebaseAuth.getInstance().currentUser

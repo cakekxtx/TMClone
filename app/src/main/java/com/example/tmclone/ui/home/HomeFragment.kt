@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tmclone.Event
@@ -19,6 +20,7 @@ import com.example.tmclone.MainActivity
 import com.example.tmclone.R
 import com.example.tmclone.SuggestEventsAdapter
 import com.example.tmclone.databinding.FragmentHomeBinding
+import com.google.api.Context
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +35,9 @@ class HomeFragment : Fragment() {
 
 	lateinit var musicRecyclerView: RecyclerView
 	lateinit var sportsRecyclerView: RecyclerView
+	lateinit var theaterRecyclerView: RecyclerView
 	lateinit var startSearchingButton: Button
+
 	
 	
 	override fun onCreateView(
@@ -46,27 +50,39 @@ class HomeFragment : Fragment() {
 		//declare variables
 		musicRecyclerView = view.findViewById(R.id.musicEventsRecyclerView)
 		sportsRecyclerView = view.findViewById(R.id.sportsEventsRecyclerView)
-		startSearchingButton = view.findViewById(R.id.startSearching_button)
+		theaterRecyclerView = view.findViewById(R.id.theaterEventsRecyclerView)
 
 		var musicEventList = ArrayList<Event>()
 		var sportsEventList = ArrayList<Event>()
+		var theaterEventList = ArrayList<Event>()
 		val musicRecyclerAdapter = SuggestEventsAdapter(musicEventList)
 		val sportsRecyclerAdapter = SuggestEventsAdapter(sportsEventList)
+		val theaterRecyclerAdapter = SuggestEventsAdapter(theaterEventList)
 
 		musicRecyclerView.adapter = musicRecyclerAdapter
 		sportsRecyclerView.adapter = sportsRecyclerAdapter
+		theaterRecyclerView.adapter = theaterRecyclerAdapter
 
 		//change layout to horizontal
-		musicRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+		/*musicRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
 		sportsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+		sportsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)*/
+		changeLayoutToHorizontal(musicRecyclerView, context)
+		changeLayoutToHorizontal(sportsRecyclerView, context)
+		changeLayoutToHorizontal(theaterRecyclerView, context)
 
+		//add divider
+		/*val dividerItemDecoration = DividerItemDecoration(view.context, DividerItemDecoration.HORIZONTAL)
+		musicRecyclerView.addItemDecoration(dividerItemDecoration)
+		sportsRecyclerView.addItemDecoration(dividerItemDecoration)*/
+		addDivider(musicRecyclerView, context)
+		addDivider(sportsRecyclerView, context)
+		addDivider(theaterRecyclerView, context)
 
 		getEvents(musicEventList, musicRecyclerAdapter, "music")
 		getEvents(sportsEventList, sportsRecyclerAdapter, "sports")
+		getEvents(theaterEventList,theaterRecyclerAdapter, "theater")
 
-		startSearchingButton.setOnClickListener{
-			//move to search fragment
-		}
 		return view
 	}
 
@@ -100,7 +116,13 @@ class HomeFragment : Fragment() {
 		})
 	}
 
+	fun changeLayoutToHorizontal(recyclerView: RecyclerView, context: android.content.Context){
+		recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+	}
 
-
+	fun addDivider(recyclerView: RecyclerView, context: android.content.Context){
+		val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+		recyclerView.addItemDecoration(dividerItemDecoration)
+	}
 
 }

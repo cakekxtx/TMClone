@@ -17,7 +17,7 @@ data class Event(
 	val images: List<ImageInfo>,
 	val dates: DateAndTime,
 	@SerializedName("url") val ticketLink: String? = "",
-	@SerializedName("_embedded") val embeddedVenues: EmbeddedVenues,
+	@SerializedName("_embedded") val embeddedVenuesAndAttraction: EmbeddedVenuesAndAttraction,
 	val priceRanges: List<Price>
 )
 
@@ -41,11 +41,14 @@ data class ActualDateAndTime(
 	val localTime: String? = "TBA"
 )
 
-data class EmbeddedVenues(
+data class EmbeddedVenuesAndAttraction(
 	val venues: List<Venues>,
+	val attraction: List<Attraction>
 )
 
-
+data class Attraction(
+	@SerializedName("name") val performerOrTeam: String
+)
 
 data class Venues(
 	@SerializedName("name") val venueName: String,

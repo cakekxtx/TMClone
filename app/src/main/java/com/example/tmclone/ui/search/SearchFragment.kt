@@ -1,6 +1,7 @@
 package com.example.tmclone.ui.search
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.SharedPreferencesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tmclone.Event
@@ -174,8 +177,9 @@ class SearchFragment : Fragment() {
 	> display content in ascending order based on event date
 	*/
 	fun search(view: View){
+		val locationEditText = view.findViewById<EditText>(R.id.location_editText)
 		if(selectCategory()) {
-			enteredCity = view.findViewById<EditText>(R.id.location_editText).text.toString()
+			enteredCity = locationEditText.text.toString()
 			if (enteredCityMethod()) {
 				retrieveDataFromWeb()
 			}
@@ -188,6 +192,7 @@ class SearchFragment : Fragment() {
 			eventRecyclerView.visibility = View.GONE
 		}
 		resetUserInput()
+		locationEditText.hideKeyboard()
 	}
 
 	/*  called in: search()
@@ -246,5 +251,10 @@ class SearchFragment : Fragment() {
 	private fun showResults(){
 		noResultsTextView.visibility = View.GONE
 		eventRecyclerView.visibility = View.VISIBLE
+	}
+
+	private fun View.hideKeyboard() {
+		val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+		inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 	}
 }

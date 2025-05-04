@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.w3c.dom.Text
 
 class SuggestEventsAdapter (private val events: ArrayList<Event>):
 	RecyclerView.Adapter<SuggestEventsAdapter.MyViewHolder>(){
@@ -31,8 +32,6 @@ class SuggestEventsAdapter (private val events: ArrayList<Event>):
 					Toast.makeText(context, "No ticket link found", Toast.LENGTH_SHORT).show()
 				}
 			}
-
-
 		}
 
 
@@ -52,7 +51,11 @@ class SuggestEventsAdapter (private val events: ArrayList<Event>):
 		val currItem = events[position]
 		val context = holder.itemView.context
 		holder.ticketurl = currItem.ticketLink.toString()
+
 		holder.eventName.text = currItem.name
+
+
+
 		val highestQualityImage = currItem.images.maxByOrNull {
 			it.width*it.height
 		}

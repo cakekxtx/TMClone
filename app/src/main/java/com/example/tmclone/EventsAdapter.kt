@@ -109,10 +109,10 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		//event name
 		holder.eventName.text = currItem.name
 		//event location
-		val venueName = currItem.embeddedVenues.venues[0].venueName
-		val city = currItem.embeddedVenues.venues[0].city.venueCity
-		val state = currItem.embeddedVenues.venues[0].state.venueState
-		val address = currItem.embeddedVenues.venues[0].address.venueAddress
+		val venueName = currItem.embeddedVenuesAndAttraction.venues[0].venueName
+		val city = currItem.embeddedVenuesAndAttraction.venues[0].city.venueCity
+		val state = currItem.embeddedVenuesAndAttraction.venues[0].state.venueState
+		val address = currItem.embeddedVenuesAndAttraction.venues[0].address.venueAddress
 
 		holder.eventLocation.text = buildString {
 			append(venueName)
@@ -132,7 +132,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 			localTime = convertTo12HrFormat(currItem.dates.start.localTime)
 		val localDate = currItem.dates.start.localDate
 		holder.eventTimeAndDate.text = buildString {
-			append("Date: $localDate")
+			append("Date: ${changeDateFormat(localDate)}")
 			append(" @ ")
 			append(localTime)
 		}
@@ -164,6 +164,11 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		holder.ticketurl = currItem.ticketLink.toString()
 	}
 
+	fun changeDateFormat(date:String?):String{ // from yyyy-mm-dd to mm/dd/yyyy
+		val dateList = date?.split("-")
+		val formattedDate = "${dateList?.get(1)}/${dateList?.get(2)}/${dateList?.get(0)}"
+		return formattedDate
+	}
 	fun convertTo12HrFormat(time: String?): String {
 		val timeList = time?.split(":")
 		val hour = timeList?.get(0)?.toInt()

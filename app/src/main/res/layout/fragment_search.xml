@@ -30,18 +30,18 @@
     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-    android:id="@+id/location_editText"
-    android:layout_width="290dp"
-    android:layout_height="40dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:ems="10"
-    android:hint="Location"
-    android:inputType="text"
-    app:layout_constraintEnd_toStartOf="@+id/searchButton"
-    app:layout_constraintHorizontal_bias="0.066"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/eventSpinner" />
+        android:id="@+id/location_editText"
+        android:layout_width="282dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Location"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/searchButton"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventSpinner" />
 
     <Button
         android:id="@+id/searchButton"
