@@ -35,6 +35,7 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 		val eventNameTextView = itemView.findViewById<TextView>(R.id.bookmarkEventName_textview)
 		val eventTicketButton = itemView.findViewById<Button>(R.id.bookmarkTicketLink_button)
 		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.removeBookmark_button)
+		val getLocationButton = itemView.findViewById<ImageButton>(R.id.getLocationBM_imageButton)
 		val firebaseDB  = FirebaseFirestore.getInstance()
 		val currUser = FirebaseAuth.getInstance().currentUser
 		var ticketurl = " "
@@ -62,6 +63,21 @@ class BookmarksAdapter (private val events: ArrayList<Event>):
 				events.removeAt(position)
 				notifyItemRemoved(position)
 
+			}
+
+			getLocationButton.setOnClickListener {
+				val locationIntent = Intent(itemView.context,MapsActivity::class.java)
+
+				val venue = events[adapterPosition].embeddedVenuesAndAttraction.venues[0]
+				val longitude = venue.location.longitude
+				val latitude = venue.location.latitude
+				val city = venue.city.venueCity
+
+				locationIntent.putExtra("longitude", longitude)
+				locationIntent.putExtra("latitude", latitude)
+				locationIntent.putExtra("city", city)
+
+				itemView.context.startActivity(locationIntent)
 			}
 		}
 	}

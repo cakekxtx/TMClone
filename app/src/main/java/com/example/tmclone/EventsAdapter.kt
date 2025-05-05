@@ -1,7 +1,5 @@
 package com.example.tmclone
 
-import android.R.attr.prompt
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -10,23 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.init
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.BlockThreshold
 import com.google.ai.client.generativeai.type.HarmCategory
 import com.google.ai.client.generativeai.type.SafetySetting
 import com.google.ai.client.generativeai.type.TextPart
-import com.google.api.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +45,7 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		val getTicketsButton = itemView.findViewById<Button>(R.id.getTickets_button)
 		val bookmarkButton = itemView.findViewById<ImageButton>(R.id.searchBookmarks_button)
 		val askGeminiButton = itemView.findViewById<ImageButton>(R.id.askGemini_button)
+		val getLocationButton = itemView.findViewById<ImageButton>(R.id.getLocation_imageButton)
 		var ticketurl = ""
 		val firebaseDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 		//val position = adapterPosition
@@ -90,6 +84,23 @@ class EventsAdapter (private val events: ArrayList<Event>):
 
 				askGemini(events[adapterPosition].name, prompt, itemView.context)
 			}
+
+			getLocationButton.setOnClickListener {
+				val locationIntent = Intent(itemView.context,MapsActivity::class.java)
+
+				val venue = events[adapterPosition].embeddedVenuesAndAttraction.venues[0]
+				val longitude = venue.location.longitude
+				val latitude = venue.location.latitude
+				val city = venue.city.venueCity
+
+				locationIntent.putExtra("longitude", longitude)
+				locationIntent.putExtra("latitude", latitude)
+				locationIntent.putExtra("city", city)
+
+				itemView.context.startActivity(locationIntent)
+			}
+
+
 		}
 	}
 
