@@ -300,9 +300,12 @@ class EventsAdapter (private val events: ArrayList<Event>):
 		userBookmarks.document(uid)
 			.get()
 			.addOnSuccessListener { document ->
-				val bookmarksArray = document.get("userbookmarks") as ArrayList<String>
-				Log.d(TAG, "Data from database successfully retreived.")
+				//create an empty list if no bookmarks retrieved
+				val bookmarksArray = document.get("userbookmarks") as? ArrayList<String> ?: ArrayList<String>()
+
+				Log.d(TAG, "Data from database successfully retrieved.")
 				addBookmarksDataToDB(firebaseDB, uid, bookmarksArray, position)
+
 			}
 			.addOnFailureListener { e ->
 				e(TAG, "Error retrieving data.", e )

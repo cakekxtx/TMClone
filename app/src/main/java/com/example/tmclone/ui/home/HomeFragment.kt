@@ -63,18 +63,10 @@ class HomeFragment : Fragment() {
 		sportsRecyclerView.adapter = sportsRecyclerAdapter
 		theaterRecyclerView.adapter = theaterRecyclerAdapter
 
-		//change layout to horizontal
-		/*musicRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-		sportsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-		sportsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)*/
 		changeLayoutToHorizontal(musicRecyclerView, context)
 		changeLayoutToHorizontal(sportsRecyclerView, context)
 		changeLayoutToHorizontal(theaterRecyclerView, context)
 
-		//add divider
-		/*val dividerItemDecoration = DividerItemDecoration(view.context, DividerItemDecoration.HORIZONTAL)
-		musicRecyclerView.addItemDecoration(dividerItemDecoration)
-		sportsRecyclerView.addItemDecoration(dividerItemDecoration)*/
 		addDivider(musicRecyclerView, context)
 		addDivider(sportsRecyclerView, context)
 		addDivider(theaterRecyclerView, context)

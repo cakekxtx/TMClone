@@ -35,7 +35,6 @@ class ProfileFragment : Fragment() {
 	lateinit var profileEmail: TextView
 	lateinit var changePasswordButton: Button
 	lateinit var logoutButton: ImageButton
-	lateinit var deleteAccountButton: Button
 
 	var isChangingPassword: Boolean = false
 

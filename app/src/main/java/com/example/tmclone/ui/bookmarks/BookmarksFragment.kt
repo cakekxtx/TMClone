@@ -32,6 +32,7 @@ class BookmarksFragment : Fragment() {
 	private val API_KEY = "EnVQtrsj7Wf4wwAviGLovBBPOWD7aqGF"
 
 	lateinit var bookmarkRecyclerView: RecyclerView
+	lateinit var noBookmarksTextView: TextView
 
 	var bookmarkedList = ArrayList<Event>()
 	val adapter = BookmarksAdapter(bookmarkedList)
@@ -39,6 +40,8 @@ class BookmarksFragment : Fragment() {
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
 	): View {
 		val view = inflater.inflate(R.layout.fragment_bookmarks, container, false)
+
+		noBookmarksTextView = view.findViewById(R.id.noBookmarks_textview)
 
 		//recycler view
 		bookmarkRecyclerView = view.findViewById(R.id.bookmarks_recyclerView)
@@ -55,9 +58,16 @@ class BookmarksFragment : Fragment() {
 		userBookmarks.document(currUser?.uid.toString())
 			.get()
 			.addOnSuccessListener { document ->
-				val eventIdArray = document.get("userbookmarks") as ArrayList<String>
-				Log.d(TAG, "Data from Firebase retrieved successfully.")
-				retrieveDataFromWeb(eventIdArray)
+				val eventIdArray = document.get("userbookmarks") as? ArrayList<String>
+
+
+				if(eventIdArray != null && eventIdArray.isNotEmpty()){
+					Log.d(TAG, "Data from Firebase retrieved successfully.")
+					retrieveDataFromWeb(eventIdArray)
+				}
+				else {
+					showNoResults()
+				}
 			}
 			.addOnFailureListener { e ->
 				Log.e(TAG, "Error retrieving data from database", e)
@@ -82,6 +92,7 @@ class BookmarksFragment : Fragment() {
 
 		val numOfEvents = eventIdArray.size
 
+
 		for(eventId in eventIdArray) {
 			eventAPI.getEventThroughID(API_KEY, eventId).enqueue(
 				object : retrofit2.Callback<EventData> {
@@ -102,10 +113,15 @@ class BookmarksFragment : Fragment() {
 							//Log.d(TAG, "bookmarkedList: $bookmarkedList")
 
 						}
+						else{
+							showNoResults()
+						}
 
 						if(numOfEvents ==  bookmarkedList.size){
 							adapter.notifyDataSetChanged()
+							showResults()
 						}
+
 					}
 
 					override fun onFailure(
@@ -120,6 +136,16 @@ class BookmarksFragment : Fragment() {
 
 		}
 
+	}
+
+	private fun showNoResults(){
+		noBookmarksTextView.visibility = View.VISIBLE
+		bookmarkRecyclerView.visibility = View.GONE
+	}
+
+	private fun showResults(){
+		noBookmarksTextView.visibility = View.GONE
+		bookmarkRecyclerView.visibility = View.VISIBLE
 	}
 
 

@@ -93,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
 					.setAvailableProviders(providers)
 					.setTosAndPrivacyPolicyUrls("example.com", "example.com")
 					.setLogo(R.drawable.ic_launcher_foreground)
+					.setTheme(R.style.Theme_TMClone)
 					.setAlwaysShowSignInMethodScreen(true)
 					.setIsSmartLockEnabled(false)
 					.build()

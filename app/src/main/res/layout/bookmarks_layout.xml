@@ -8,8 +8,8 @@
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="392dp"
-        android:layout_height="319dp"
+        android:layout_width="385dp"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         app:cardBackgroundColor="@color/grey"
         app:cardCornerRadius="15dp"
@@ -41,7 +41,7 @@
 
             <TextView
                 android:id="@+id/bookmarkEventName_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"

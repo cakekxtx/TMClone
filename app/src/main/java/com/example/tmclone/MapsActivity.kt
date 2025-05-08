@@ -56,8 +56,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 		findViewById<ImageButton>(R.id.back_imageButton).setOnClickListener {
-			val intent = Intent(this, MainActivity::class.java)
-			startActivity(intent)
+			/*val intent = Intent(this, MainActivity::class.java)
+			startActivity(intent)*/
+			finish()
 		}
 
 

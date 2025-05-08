@@ -18,4 +18,5 @@
     <string name="title_app">TicketMaster Clone</string>
     <string name="string_theater">Theater</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="string_nobookmarks">No bookmarks to show.</string>
 </resources>
