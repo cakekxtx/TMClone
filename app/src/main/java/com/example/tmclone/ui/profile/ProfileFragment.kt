@@ -149,7 +149,7 @@ class ProfileFragment : Fragment() {
 		val builder = AlertDialog.Builder(context)
 			.setTitle("Change password")
 			.setMessage("Please enter your current and new password below to continue.")
-			.setView(linearlayout,10,10,10,10)
+			.setView(linearlayout)
 
 		builder.setPositiveButton("Confirm") { dialog, which ->
 			val currPassword = currPasswordEditText.text.toString()
