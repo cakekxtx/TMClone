@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.kotlin.android)
@@ -17,6 +19,19 @@ android {
 		versionName = "1.0"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+		//load values from .properties file
+		val keystoreFile = project.rootProject.file("keys.properties")
+		val properties = Properties()
+		properties.load(keystoreFile.inputStream())
+
+		//return empty key in case something ggoes wrong
+		val geminiApiKey = properties.getProperty("GEMINI_API_KEY") ?: ""
+		buildConfigField(type = "String", name = "GEMINI_KEY", value = geminiApiKey)
+		val ticketmasterApiKey = properties.getProperty("TICKETMASTER_API_KEY") ?: ""
+		buildConfigField(type = "String", name = "TM_KEY", value = ticketmasterApiKey)
+		val googleMapsApiKey = properties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""
+		manifestPlaceholders["GOOGLEMAPS_KEY"] = googleMapsApiKey
 	}
 
 	buildTypes {
@@ -37,6 +52,7 @@ android {
 	}
 	buildFeatures {
 		viewBinding = true
+		buildConfig = true
 	}
 }
 

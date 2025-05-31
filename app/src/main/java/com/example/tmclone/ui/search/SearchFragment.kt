@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.core.content.SharedPreferencesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tmclone.BuildConfig
 import com.example.tmclone.Event
 import com.example.tmclone.EventData
 import com.example.tmclone.EventTicketService
@@ -34,13 +35,10 @@ import retrofit2.Response
 
 
 private val BASE_URL = "https://app.ticketmaster.com/discovery/v2/"
-private val API_KEY = "EnVQtrsj7Wf4wwAviGLovBBPOWD7aqGF"
+private val API_KEY = BuildConfig.TM_KEY
 private const val TAG = "SearchFragment"
 class SearchFragment : Fragment() {
 	//private val viewModel: SearchViewModel by viewModels()
-
-	private val BASE_URL = "https://app.ticketmaster.com/discovery/v2/"
-	private val API_KEY = "EnVQtrsj7Wf4wwAviGLovBBPOWD7aqGF"
 
 	lateinit var cityEditText: EditText
 	lateinit var categorySpinner: Spinner

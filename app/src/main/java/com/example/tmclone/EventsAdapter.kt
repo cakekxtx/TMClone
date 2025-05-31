@@ -32,7 +32,7 @@ private const val TAG = "EventsAdapter"
 class EventsAdapter (private val events: ArrayList<Event>):
 	RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
 
-	val GEMINI_API_KEY = "AIzaSyAI5j6qJ9zRampB5G9lMG9TXay3LlWjSls"
+	val GEMINI_API_KEY = BuildConfig.GEMINI_KEY
 
 
 	inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

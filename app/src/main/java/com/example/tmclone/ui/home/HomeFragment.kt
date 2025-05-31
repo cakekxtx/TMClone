@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tmclone.BuildConfig
 import com.example.tmclone.Event
 import com.example.tmclone.EventData
 import com.example.tmclone.EventTicketService
@@ -31,7 +32,7 @@ private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
 	
 	private val BASE_URL = "https://app.ticketmaster.com/discovery/v2/"
-	private val API_KEY = "EnVQtrsj7Wf4wwAviGLovBBPOWD7aqGF"
+	private val API_KEY = BuildConfig.TM_KEY
 
 	lateinit var musicRecyclerView: RecyclerView
 	lateinit var sportsRecyclerView: RecyclerView
